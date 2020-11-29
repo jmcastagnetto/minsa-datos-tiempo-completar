@@ -7,13 +7,13 @@ csv_files <- dir_ls(
   recurse = TRUE
 )
 
-fac_files <- csv_files[str_detect(csv_files, "fallec")]
+fal_files <- csv_files[str_detect(csv_files, "fallec")]
 
-fac_peru_hist <- tibble()
-fac_dpto_hist <- tibble()
-fac_prov_hist <- tibble()
+fal_peru_hist <- tibble()
+fal_dpto_hist <- tibble()
+fal_prov_hist <- tibble()
 
-for (fn in fac_files) {
+for (fn in fal_files) {
   fecha = lubridate::ymd(path_split(fn)[[1]][2])
   csv <- read_csv(fn)
   # nivel nacional
@@ -24,8 +24,8 @@ for (fn in fac_files) {
     mutate(
       corte = fecha
     )
-  fac_peru_hist <- bind_rows(
-    fac_peru_hist,
+  fal_peru_hist <- bind_rows(
+    fal_peru_hist,
     pe_df
   )
   # nivel departamento
@@ -36,8 +36,8 @@ for (fn in fac_files) {
     mutate(
       corte = fecha
     )
-  fac_dpto_hist <- bind_rows(
-    fac_dpto_hist,
+  fal_dpto_hist <- bind_rows(
+    fal_dpto_hist,
     dpt_df
   )
   #nivel provincia
@@ -48,30 +48,30 @@ for (fn in fac_files) {
     mutate(
       corte = fecha
     )
-  fac_prov_hist <- bind_rows(
-    fac_prov_hist,
+  fal_prov_hist <- bind_rows(
+    fal_prov_hist,
     prv_df
   )
 }
 
 write_csv(
-  fac_peru_hist,
-  file = "data/fac_peru_hist.csv"
+  fal_peru_hist,
+  file = "data/fal_peru_hist.csv"
 )
 
 write_csv(
-  fac_dpto_hist,
-  file = "data/fac_dpto_hist.csv"
+  fal_dpto_hist,
+  file = "data/fal_dpto_hist.csv"
 )
 
 write_csv(
-  fac_prov_hist,
-  file = "data/fac_prov_hist.csv"
+  fal_prov_hist,
+  file = "data/fal_prov_hist.csv"
 )
 
 # quick plot, national level
 ggplot(
-  fac_peru_hist,
+  fal_peru_hist,
   aes(x = fecha_fallecimiento, y = n,
       group = as.factor(corte),
       color = as.factor(corte))
@@ -83,7 +83,7 @@ ggplot(
 
 # quick plot, subnational level
 # ggplot(
-#   fac_dpto_hist,
+#   fal_dpto_hist,
 #   aes(x = fecha_fallecimiento, y = n,
 #       group = as.factor(corte),
 #       color = as.factor(corte))
